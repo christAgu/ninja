@@ -1,0 +1,154 @@
+exports.success = (message, data) => {
+    return { message, data }
+  }
+
+  exports.getUniqueId = (pokemons) => {
+    const pokemonsIds = pokemons.map(pokemon => pokemon.id)
+    const maxId = pokemonsIds.reduce((a,b) => Math.max(a, b))
+    const uniqueId = maxId + 1
+     
+    return uniqueId
+  }
+
+  //CRUD////////////////////////////////////////////////////////////////////////////////////////
+app.get('/api/pokemons/:id/', (req, res) => {
+    const id = parseInt(req.params.id)
+    const pokemon = pokemons.find(pokemon => pokemon.id === id)
+    const message = 'Un pokémon a bien été trouvé.'
+    res.json(success(message, pokemon))
+
+    // if (data) {
+    //     const message = 'Un pokémon a bien été trouvé.'
+    //     res.json(help.success(message, data))
+
+    // } else {
+    //     res.json('nothing to show')
+    // }
+})
+
+app.post('/api/pokemons', (req, res) => {
+    const id = getUniqueId(pokemons)
+    // Problème ci-dessous, le body est une string et non un JSON !
+    const pokemonCreated = { ...req.body, ...{id: id, created: new Date()}}
+    pokemons.push(pokemonCreated)
+    const message = `Le pokémon ${pokemonCreated.name} a bien été crée.`
+    res.json(success(message, pokemonCreated))
+  })
+
+  app.delete('/api/pokemons/:id', (req, res) => {
+    const id = parseInt(req.params.id)
+    const pokemonDeleted = pokemons.find(pokemon => pokemon.id === id)
+    pokemons = pokemons.filter(pokemon => pokemon.id !== id)
+    const message = `Le pokémon ${pokemonDeleted.name} a bien été supprimé.`
+    res.json(success(message, pokemonDeleted))
+  });
+
+  app.put('/api/pokemons/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const pokemonUpdated = { ...req.body, id: id }
+    pokemons = pokemons.map(poke => {
+     return poke.id === id ? pokemonUpdated : poke
+    })
+    
+    const message = `Le pokémon ${pokemonUpdated.name} a bien été modifié.`
+    res.json(success(message, pokemonUpdated))
+   });
+
+
+app.get('/api/pokemons/', (req, res) => {
+    const message = `vous avez ${pokemons.length} , Listé ci-dessous  , `
+    res.json(success(message, pokemons))
+})
+
+
+
+
+// app.use((req, res, next) => {
+//     console.log('URL : ' + req.url)
+//     next()
+//   })
+
+// La version améliorée de notre endpoint précédent, avec des paramètres :
+// app.get('/api/pokemons/:id/:name', (req, res) => {
+//   const id = req.params.id
+//   const name = req.params.name
+//   res.send(`Le pokémon n°${id} est ${name}.`)
+// })
+
+// app.get('/api/pokemons/:id/', (req, res) => {
+//    const id =  parseInt(req.params.id)
+//    const pokemon=pokemons.find(pokemon=>pokemon.id===id)
+//    res.send(`vous avz demandez ${pokemon.name}`)
+//   })
+
+
+
+// CAS 1: On tri par ordre alphabétique croisant, sur la propriété "name".
+['name', 'ASC'] 
+ 
+// CAS 2: On tri par ordre alphabétique décroisant, sur la propriété "name".
+['name', 'DESC']
+ 
+// CAS 3: On tri par ordre alphabétique croisant, sur la propriété "name",
+// en utilisant un raccourci de syntaxe. Identique au cas n°1 !
+['name']
+
+
+// paramètre de requête avec Express
+req.query.name
+
+// Paramètre d'URL:
+
+/api/pokemons/:id
+req.params.id
+ 
+// Paramètre de requête
+/api/pokemons?name=Bulbizarre
+req.query.name
+
+
+
+
+
+module.exports = (app) => {
+  app.get('/api/ninjas/:id', (req, res) => {
+
+    Ninja.findByPk(req.params.id).then(data => {
+
+      // if (data === null) {
+      //   const message = "Le Ninja  que vous demandé est surement en mission. Reevenez plus tard."
+      //   return res.status(404).json({
+      //     message
+      //   })
+      // }
+
+      const message = 'Ce Ninja a bien été retrouvé dans le temple , mais il grouil de faim.'
+      res.json({
+          message,
+          data: data
+        }).catch(error => {
+          const message = "Le Ninja que vous demandn'a pas pu être récupéré. il est surement en séance d'entraiment."
+          res.status(500).json({
+            message,
+            data: error
+          })
+        })
+    })
+
+  })
+}
+
+
+Authentification :
+
+Étape n°1 : La première étape, c’est lorsqu’un client effectue une requête afin de s’authentifier auprès de notre API Rest. Il devra transmettre un identifiant et un mot de passe au point de terminaison de connexion.
+Étape n°2 : Si l’identifiant et le mot de passe vérifié avec le module bcrypt sont corrects, alors notre API Rest renvoie un jeton JWT valide au client. Sinon, on retourne un message d’erreur avec les explications adéquates.
+Étape n°3 : Grâce au jeton JWT récupéré, le client peut maintenant effectuer des requêtes sécurisées vers les points de terminaison de notre API Rest. Par contre, il devra bien transmettre le jeton JWT pour CHAQUE requête nécessitant une authentification. Le jeton JWT se transmet dans l’en-tête de la requête HTTP, mais nous verrons comment faire cela plus précisément un peu plus tard. Bien sûr, si le jeton n’est plus valide, l’utilisateur devra en demander un nouveau.
+Étape n°4 : Si le jeton JWT est valide, alors nous renvoyons les données demandées au client. Sinon, on lui refuse l’accès aux données qu’il a demandées.
+
+
+Générer un jeton JWT valide:
+
+-Les informations de l’utilisateur : Il s’agit de l’identifiant unique de l’utilisateur, qui va permettre de créer un jeton qui sera uniquement valide pour ce client, et pas un autre. Et oui, le jeton JWT est personnel pour chaque utilisateur. C’est un peu comme votre clef d’appartement ou de voiture.
+-Une clé secrète pour renforcer la sécurité : Afin de sécuriser au maximum le jeton JWT, on utilise une clé secrète externe lors du cryptage du jeton. Pour être plus concret, cette clé secrète se présente sous la forme d’une simple chaîne de caractères, au sein de notre projet.
+-Une date de validité pour le jeton : C’est le dernier élément, il s’agit simplement d’indiquer la durée de validité du jeton. Par exemple, une heure, une journée entière ou carrément une semaine complète. Ensuite, le jeton sera périmé et ne pourra plus être utilisé pour s’authentifier sur notre API Rest.
