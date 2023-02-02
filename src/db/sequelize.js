@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const ninjas = require('./data')
 require('dotenv').config()
 
-if(process.env.NODE_ENV === 'production') {
+
   // Saisissez également vos nouveaux identifiants pour la production :
   sequelize = new Sequelize('bwzip6k8tiru37qjgwgq', 'ukgfnpbyz6dsceoe', '8BdtQY3oWLImqe1WJ7qr', {
     host: 'bwzip6k8tiru37qjgwgq-mysql.services.clever-cloud.com',
@@ -16,19 +16,7 @@ if(process.env.NODE_ENV === 'production') {
     },
     logging: true
   })
-} else {
-  sequelize = new Sequelize('Ninjadex', 'root', '', {
-    host: 'localhost',
-    dialect: 'mariadb',
-    dialectOptions: {
-      timezone: 'Etc/GMT-2',
 
-    },
-    logging: true
-  })
-   
-}
- 
 
 //on instancie le modèle User auprès de Sequelize, comme on avait fait pour le modèle des pokémons.
 const Ninja = NinjaModel(sequelize, DataTypes)
@@ -47,15 +35,15 @@ sequelize.authenticate()
 
 const initDb = () => {
   return sequelize.sync().then(_ => {
-    ninjas.map(ninja => {
+    ninjas.map(tobi => {
       Ninja.create({
-        name: ninja.name,
-        hp: ninja.hp,
-        cp: ninja.cp,
-        picture: ninja.picture,
+        name: tobi.name,
+        hp: tobi.hp,
+        cp: tobi.cp,
+        picture: tobi.picture,
 
 
-      }).then(ninja => console.log(ninja.toJSON()))
+      }).then(tobi => console.log(ninja.toJSON()))
 
       
 
