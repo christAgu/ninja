@@ -9,7 +9,7 @@ const sequelize = require('./src/db/sequelize')
 //  sequelize.initDb()
 
 app.use(express.json())
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 8080
 app.get('/', (req, res) => res.send('Welcom to the Ninja Temple !👋'))
 
 
