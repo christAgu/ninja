@@ -8,8 +8,8 @@ require('dotenv').config()
 
 if(process.env.NODE_ENV === 'production') {
   // Saisissez également vos nouveaux identifiants pour la production :
-  sequelize = new Sequelize('process.env.MYSQL_ADDON_DB', 'process.env.MYSQL_ADDON_USER', 'process.env.MYSQL_ADDON_PASSWORD', {
-    host: 'process.env.MYSQL_ADDON_HOST',
+  sequelize = new Sequelize('bwzip6k8tiru37qjgwgq', 'ukgfnpbyz6dsceoe', '8BdtQY3oWLImqe1WJ7qr', {
+    host: 'bwzip6k8tiru37qjgwgq-mysql.services.clever-cloud.com',
     dialect: 'mariadb',
     dialectOptions: {
       timezone: 'Etc/GMT-2',
