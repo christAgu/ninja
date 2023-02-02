@@ -11,7 +11,6 @@ if(process.env.NODE_ENV === 'production') {
   sequelize = new Sequelize('process.env.MYSQL_ADDON_DB', 'process.env.MYSQL_ADDON_USER', 'process.env.MYSQL_ADDON_PASSWORD', {
     host: 'process.env.MYSQL_ADDON_HOST',
     dialect: 'mariadb',
-    port:'process.env.MYSQL_ADDON_PORT',
     dialectOptions: {
       timezone: 'Etc/GMT-2',
     },
