@@ -8,15 +8,29 @@ require('dotenv').config()
 
 
   // Saisissez également vos nouveaux identifiants pour la production :
-  sequelize = new Sequelize('bwzip6k8tiru37qjgwgq', 'ukgfnpbyz6dsceoe', '8BdtQY3oWLImqe1WJ7qr', {
-    host: 'bwzip6k8tiru37qjgwgq-mysql.services.clever-cloud.com',
-    dialect: 'mariadb',
-    dialectOptions: {
-      timezone: 'Etc/GMT-2',
-    },
-    logging: true
-  })
+  
 
+  if(process.env.NODE_ENV === 'production') {
+    // Saisissez également vos nouveaux identifiants pour la production :
+    sequelize = new Sequelize('user_sizebroken', 'user_sizebroken', '938f499111b011ade8a888d870ceb9cc1c7e2f6d', {
+      host: 'efs.h.filess.io',
+      dialect: 'mariadb',
+      dialectOptions: {
+        timezone: 'Etc/GMT-2',
+      },
+      logging: true
+    })
+  } else {
+    sequelize = new Sequelize('Ninjadex', 'pma', '', {
+      host: 'localhost',
+      dialect: 'mariadb',
+      dialectOptions: {
+        timezone: 'Etc/GMT-2',
+      },
+      logging: true
+    })
+     
+  }
 
 //on instancie le modèle User auprès de Sequelize, comme on avait fait pour le modèle des pokémons.
 const Ninja = NinjaModel(sequelize, DataTypes)

@@ -152,3 +152,116 @@ Générer un jeton JWT valide:
 -Les informations de l’utilisateur : Il s’agit de l’identifiant unique de l’utilisateur, qui va permettre de créer un jeton qui sera uniquement valide pour ce client, et pas un autre. Et oui, le jeton JWT est personnel pour chaque utilisateur. C’est un peu comme votre clef d’appartement ou de voiture.
 -Une clé secrète pour renforcer la sécurité : Afin de sécuriser au maximum le jeton JWT, on utilise une clé secrète externe lors du cryptage du jeton. Pour être plus concret, cette clé secrète se présente sous la forme d’une simple chaîne de caractères, au sein de notre projet.
 -Une date de validité pour le jeton : C’est le dernier élément, il s’agit simplement d’indiquer la durée de validité du jeton. Par exemple, une heure, une journée entière ou carrément une semaine complète. Ensuite, le jeton sera périmé et ne pourra plus être utilisé pour s’authentifier sur notre API Rest.
+
+
+
+/////////////////////////////////////////////////////sequelize .js/////////////////////////////////////////////
+
+const {
+  Sequelize,
+  DataTypes
+} = require('sequelize')
+const Model = require('../../model/ninja')
+//on importe le modèle User que nous avons implémenter précédemment.
+const UserModel = require('../../model/user')
+const bcrypt = require('bcrypt')
+const NinjaData = require('./data')
+require('dotenv').config()
+
+
+// Saisissez également vos nouveaux identifiants pour la production :
+
+
+// sequelize = new Sequelize('test', 'root', '', {
+//   host: 'localhost',
+//   dialect: 'mariadb',
+//   dialectOptions: {
+//     timezone: 'Etc/GMT-2',
+
+//   },
+//   logging: true
+// })
+
+
+
+
+//on instancie le modèle User auprès de Sequelize, comme on avait fait pour le modèle des pokémons.
+
+const NinjaModel = Model(sequelize, DataTypes)
+const User = UserModel(sequelize, DataTypes)
+
+sequelize.authenticate()
+  .then(_ => console.log('Connection has been established successfully.'))
+  .catch(error => console.error('Unable to connect to the database:', error))
+
+// 3/3. On teste si la connexion a réussie ou non :
+
+
+
+
+// On initialise la base de données "Ninjadex" avec 12 Ninja.
+
+if(process.env.NODE_ENV === 'production') {
+  // Saisissez également vos nouveaux identifiants pour la production :
+  sequelize = new Sequelize('ky8u5y891hfoaw9y', 'ukgfnpbyz6dsceoe', '8BdtQY3oWLImqe1WJ7qr', {
+    host: 'bwzip6k8tiru37qjgwgq-mysql.services.clever-cloud.com',
+    dialect: 'mariadb',
+    dialectOptions: {
+      timezone: 'Etc/GMT-2',
+    },
+    logging: true
+  })
+} else {
+  sequelize = new Sequelize('dudu', 'root', '', {
+    host: '127.0.0.1',
+    dialect: 'mariadb',
+    dialectOptions: {
+      timezone: 'Etc/GMT-2',
+    },
+    logging: true
+  })
+   
+} 
+
+const initDb = () => {
+  return sequelize.sync({force:true}).then(_ => {
+    NinjaData.map(chris => {
+      NinjaModel.create({
+        name: chris.name,
+        hp: chris.hp,
+        cp: chris.cp,
+        picture: chris.picture,
+
+
+      }).then(chris => console.log(chris.toJSON()))
+
+
+
+
+
+
+
+
+      // on pousse un nouvel utilisateur dans notre base de données MySQL, grâce à la méthode create.
+      bcrypt.hash('Chioki6', 10)
+        .then(hash => User.create({
+          username: 'Chioki',
+          password: hash
+        })).then(user => console.log(user.toJSON()))
+    })
+
+    console.log('La base de donnée a bien été initialisée !')
+  })
+
+ 
+
+
+}
+
+
+module.exports = {
+  initDb,
+  //export de  notre modèle User à la ligne, afin de pouvoir l’utiliser ailleurs dans notre API Rest.
+  NinjaModel,
+  User
+}

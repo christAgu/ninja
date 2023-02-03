@@ -9,7 +9,7 @@ const sequelize = require('./src/db/sequelize')
 //  sequelize.initDb()
 
 app.use(express.json())
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 3000
 app.get('/', (req, res) => res.send('Welcom to the Ninja Temple !👋'))
 
 
@@ -37,7 +37,5 @@ app.use(({res}) => {
 // En appelant notre point de terminaison avec le paramètre 'app'.
 // Pour rappel, 'app' est notre application Express.
 
-
- 
 
 app.listen(port, () => console.log(`yo check your app on  : http://localhost:${port}`))

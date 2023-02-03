@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         notNull: { msg: 'Le nom est une propriété requise.'},
         
       },
-      unique: {
+     /* unique: {
         msg: 'Le nom est déjà pris.'
-      },
+      },*/
       },
       hp: {
         type: DataTypes.INTEGER,
