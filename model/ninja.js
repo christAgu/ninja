@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Ninja', {
+    return sequelize.define('zion trust', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -63,4 +63,9 @@ module.exports = (sequelize, DataTypes) => {
       
       
     })
+
+    
   }
+
+
+  

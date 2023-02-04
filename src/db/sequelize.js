@@ -4,6 +4,7 @@ const NinjaModel = require('../../model/ninja')
 const UserModel = require('../../model/user')
 const bcrypt = require('bcrypt')
 const ninjas = require('./data')
+
 require('dotenv').config()
 
 
@@ -12,8 +13,9 @@ require('dotenv').config()
 
   if(process.env.NODE_ENV === 'production') {
     // Saisissez également vos nouveaux identifiants pour la production :
-    sequelize = new Sequelize('Ninjadex_worryboxno', 'Ninjadex_worryboxno', 'f33e780c353c8899410af3a825cc01ceab59110f', {
-      host: 'hqt.h.filess.io',
+    sequelize = new Sequelize('user_sizebroken', 'user_sizebroken', '938f499111b011ade8a888d870ceb9cc1c7e2f6d', {
+      host: 'efs.h.filess.io',
+      port:3307,
       dialect: 'mariadb',
       dialectOptions: {
         timezone: 'Etc/GMT-2',
@@ -21,9 +23,10 @@ require('dotenv').config()
       logging: true
     })
   } else {
-    sequelize = new Sequelize('Ninjadex', 'pma', '', {
+    sequelize = new Sequelize('test', 'pma', '', {
       host: 'localhost',
       dialect: 'mariadb',
+     
       dialectOptions: {
         timezone: 'Etc/GMT-2',
       },
@@ -48,7 +51,7 @@ sequelize.authenticate()
 
 
 const initDb = () => {
-  return sequelize.sync().then(_ => {
+  return sequelize.sync({force:true}).then(_ => {
     ninjas.map(tobi => {
       Ninja.create({
         name: tobi.name,
@@ -57,7 +60,7 @@ const initDb = () => {
         picture: tobi.picture,
 
 
-      }).then(tobi => console.log(ninja.toJSON()))
+      }).then(tobi => console.log(tobi.toJSON()))
 
       
 

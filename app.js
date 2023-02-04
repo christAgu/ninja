@@ -6,7 +6,7 @@ const app = express()
 //     success ,  getUniqueId
 // } = require('./helper.js')
 const sequelize = require('./src/db/sequelize')
-//  sequelize.initDb()
+sequelize.initDb()
 
 app.use(express.json())
 const port = process.env.PORT || 3000
