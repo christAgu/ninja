@@ -12,8 +12,8 @@ require('dotenv').config()
 
   if(process.env.NODE_ENV === 'production') {
     // Saisissez également vos nouveaux identifiants pour la production :
-    sequelize = new Sequelize('user_sizebroken', 'user_sizebroken', '938f499111b011ade8a888d870ceb9cc1c7e2f6d', {
-      host: 'efs.h.filess.io',
+    sequelize = new Sequelize('Ninjadex_worryboxno', 'Ninjadex_worryboxno', 'f33e780c353c8899410af3a825cc01ceab59110f', {
+      host: 'hqt.h.filess.io',
       dialect: 'mariadb',
       dialectOptions: {
         timezone: 'Etc/GMT-2',
